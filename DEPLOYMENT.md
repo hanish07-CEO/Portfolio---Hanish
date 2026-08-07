@@ -61,21 +61,21 @@ If you only want to host the static React frontend without the Express backend:
 
 ---
 
-## 🔧 Permanent Fix for `Cannot find module '/opt/render/project/src/dist/server.cjs'`
+## 🔧 Permanent Fix for `Cannot find module server.cjs`
 
 If your Render deployment logs showed `Error: Cannot find module '/opt/render/project/src/dist/server.cjs'`:
 
 ### 💡 Why it happened:
-In your Render Dashboard settings for **Portfolio---Hanish**, the **Root Directory** was set to `src` (or auto-detected as `src`). When Render executes `npm start` (`node dist/server.cjs`) inside `src`, Node looks for `src/dist/server.cjs` instead of root `dist/server.cjs`.
+Render ran `npm start` before running `npm run build` (or Render was set up with `src` as root directory where build command was omitted or executed in a sub-folder).
 
-### 🛡️ Permanent Dual-Location Fix Implemented:
-1. **Automated Dual-Sync (`build.js`)**: `build.js` builds Vite + esbuild and automatically copies the output to **BOTH** `./dist` and `./src/dist`.
-2. **Resilient Static Resolution (`server.ts`)**: The Express server automatically checks `./dist`, `./src/dist`, and parent directories for static frontend files.
-3. **Environment Setup (`package.json` & `render.yaml`)**: `NPM_CONFIG_PRODUCTION=false` ensures all build dependencies (`esbuild`, `vite`, `tsx`) are available during Render's build step.
+### 🛡️ Permanent Self-Healing Fix Implemented:
+1. **On-Demand Build-on-Start (`start.js`)**: `start.js` automatically searches all candidate paths (`./dist`, `./src/dist`, `../dist`). If `server.cjs` is missing, `start.js` automatically invokes `build.js` on the spot before starting Node!
+2. **Dual Sync (`build.js`)**: `build.js` builds both the Vite client SPA and Express server, automatically mirroring the output into both root `./dist/` and `./src/dist/`.
+3. **Resilient Static Resolution (`server.ts`)**: Express detects and serves client assets regardless of whether Node was launched from `/` or `/src`.
 
 ### 🚀 How to trigger the successful deploy:
-1. Push the latest code to your GitHub repo (`git push origin main`).
+1. Push the latest code to your GitHub repository (`git push origin main`).
 2. On Render Dashboard (**Portfolio---Hanish**), click **Manual Deploy** → **Clear build cache & deploy**.
-3. Render will execute `node build.js` and start `node dist/server.cjs` cleanly without any module errors!
+3. Render will start cleanly without any module or build errors!
 
 
