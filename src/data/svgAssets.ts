@@ -218,3 +218,63 @@ export const HANISH_AVATAR_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(`
   </g>
 </svg>
 `)}`;
+
+// Preset 2: Cyberpunk Matrix Developer Avatar
+export const HANISH_AVATAR_CYBER_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500" style="background:#022c22; font-family: monospace;">
+  <defs>
+    <radialGradient id="cyberGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#022c22" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="cyberFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#042f2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#cyberGlow)"/>
+  <circle cx="250" cy="250" r="210" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="8 6"/>
+  <circle cx="250" cy="250" r="180" fill="none" stroke="#059669" stroke-width="1.5"/>
+  <path d="M130 450 Q250 350 370 450 Z" fill="#064e3b" stroke="#10b981" stroke-width="2"/>
+  <path d="M180 180 Q180 300 250 315 Q320 300 320 180 Q320 120 250 115 Z" fill="url(#cyberFace)" stroke="#34d399" stroke-width="2"/>
+  <!-- Cyber Visor -->
+  <rect x="180" y="170" width="140" height="35" rx="8" fill="#022c22" stroke="#10b981" stroke-width="2"/>
+  <text x="250" y="193" font-size="14" font-weight="bold" fill="#34d399" text-anchor="middle">&lt;AI_SYSTEM_ONLINE&gt;</text>
+  <path d="M220 250 Q250 265 280 250" stroke="#34d399" stroke-width="3" fill="none"/>
+  <text x="250" y="420" font-size="16" font-weight="bold" fill="#6ee7b7" text-anchor="middle">HANISH MUSINI // CYBER_DEV</text>
+</svg>
+`)}`;
+
+// Preset 3: Executive Luxury Dark Avatar
+export const HANISH_AVATAR_EXECUTIVE_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500" style="background:#18181b; font-family: system-ui, sans-serif;">
+  <defs>
+    <radialGradient id="goldGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#18181b" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="suitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#27272a"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#goldGlow)"/>
+  <circle cx="250" cy="250" r="220" fill="none" stroke="url(#goldGrad)" stroke-width="3"/>
+  <!-- Suit Blazer -->
+  <path d="M110 460 L190 350 L250 400 L310 350 L390 460 Z" fill="url(#suitGrad)" stroke="#f59e0b" stroke-width="1.5"/>
+  <path d="M250 400 L250 500" stroke="#f59e0b" stroke-width="2"/>
+  <!-- Executive Face -->
+  <path d="M185 180 Q185 295 250 310 Q315 295 315 180 Q315 125 250 120 Z" fill="#f8fafc" stroke="#d97706" stroke-width="1.5"/>
+  <path d="M170 165 Q165 105 225 85 Q265 75 315 95 Q335 125 330 165 Z" fill="#27272a"/>
+  <circle cx="215" cy="188" r="5" fill="#27272a"/>
+  <circle cx="285" cy="188" r="5" fill="#27272a"/>
+  <path d="M230 250 Q250 265 270 250" stroke="#d97706" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <rect x="175" y="420" width="150" height="28" rx="8" fill="#27272a" stroke="url(#goldGrad)" stroke-width="1.5"/>
+  <text x="250" y="439" font-size="12" font-weight="800" fill="#fbbf24" text-anchor="middle">FOUNDER @ UNISELL</text>
+</svg>
+`)}`;
+
