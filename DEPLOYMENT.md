@@ -63,12 +63,15 @@ If you only want to host the static React frontend without the Express backend:
 
 ## 🔧 Fix for `Cannot find module '/opt/render/project/src/dist/server.cjs'`
 
-If you previously encountered a build failure with `Cannot find module dist/server.cjs`:
+If you encountered `Error: Cannot find module '/opt/render/project/src/dist/server.cjs'`:
 
-1. **Root Cause**: Render's production mode skips installing build tools (`esbuild`, `vite`, `typescript`) if listed under `devDependencies`.
-2. **Solution Applied**: All build dependencies have been moved to `dependencies` in `package.json`, and `NPM_CONFIG_PRODUCTION=false` has been set in `render.yaml`.
+1. **Root Cause**: Render's build process failed to execute `esbuild` after `vite build` due to missing binary permissions or shell operators when invoked under Bun or Render's runner.
+2. **Solution Applied**:
+   - Created a standalone JavaScript build script `build.js` that programmatically builds both Vite client assets and bundles `server.ts` into `dist/server.cjs` using Node API.
+   - Updated `package.json` so `"build": "node build.js"` works identically across Node, Bun, and Render's environment.
+   - All build dependencies (`esbuild`, `vite`, `@tailwindcss/vite`) are placed in `dependencies` so Render installs them during build phase.
 3. **How to Redeploy on Render**:
-   - Commit & push the updated `package.json` and `render.yaml` to your GitHub repo (`git push origin main`).
-   - On the Render Dashboard, click **Manual Deploy** → **Clear build cache & deploy**.
-   - Your build will run `npm run build`, generating `dist/server.cjs` successfully!
+   - Commit and push all files (`package.json`, `build.js`, `render.yaml`) to your GitHub repo (`git push origin main`).
+   - In Render Dashboard for **Portfolio---Hanish**, click **Manual Deploy** → **Clear build cache & deploy**.
+   - Render will run `npm run build` (which executes `node build.js`) and start `node dist/server.cjs` cleanly!
 
