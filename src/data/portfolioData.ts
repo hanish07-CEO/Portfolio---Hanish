@@ -16,8 +16,8 @@ export const personalData: PersonalInfo = {
   bio: "Second-year B.Tech Computer Science student at IIIT Surat with hands-on experience in AI engineering, data analytics, and full-stack software development. Currently Data Analytics Intern at iStudio and former AI Engineer Intern at DecodeLabs. Founder of UniSell, a dedicated e-commerce platform empowering small and medium enterprises (SMEs). Passionate about building high-performance scalable systems and exploring entrepreneurship.",
   summary: "A passionate tech enthusiast focused on transforming complex ideas into functional digital platforms. Experienced in machine learning pipelines, data visualization, robust DBMS architecture, and full-stack web applications.",
   status: "Available for Internships & Projects",
-  avatarUrl: HANISH_AVATAR_SVG,
-  secondaryPhotoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
+  avatarUrl: "https://www.image2url.com/r2/default/images/1786105019527-a3101aaf-45a6-4c07-8142-a6c578079ac2.jpeg",
+  secondaryPhotoUrl: "https://www.image2url.com/r2/default/images/1786105019527-a3101aaf-45a6-4c07-8142-a6c578079ac2.jpeg"
 };
 
 export const experienceData: ExperienceItem[] = [
