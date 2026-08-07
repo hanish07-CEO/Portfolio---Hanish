@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
@@ -87,7 +88,21 @@ Be polite, enthusiastic, concise (2-4 sentences max), and highlight Hanish's str
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), "dist");
+    let distPath = path.join(process.cwd(), "dist");
+    if (!fs.existsSync(path.join(distPath, "index.html"))) {
+      const altPaths = [
+        path.join(process.cwd(), "..", "dist"),
+        path.join(__dirname, "dist"),
+        path.join(__dirname, "..", "dist"),
+      ];
+      for (const alt of altPaths) {
+        if (fs.existsSync(path.join(alt, "index.html"))) {
+          distPath = alt;
+          break;
+        }
+      }
+    }
+    console.log(`Serving static assets from: ${distPath}`);
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));

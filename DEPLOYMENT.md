@@ -61,17 +61,21 @@ If you only want to host the static React frontend without the Express backend:
 
 ---
 
-## 🔧 Fix for `Cannot find module '/opt/render/project/src/dist/server.cjs'`
+## 🔧 Permanent Fix for `Cannot find module '/opt/render/project/src/dist/server.cjs'`
 
-If you encountered `Error: Cannot find module '/opt/render/project/src/dist/server.cjs'`:
+If your Render deployment logs showed `Error: Cannot find module '/opt/render/project/src/dist/server.cjs'`:
 
-1. **Root Cause**: Render's build process failed to execute `esbuild` after `vite build` due to missing binary permissions or shell operators when invoked under Bun or Render's runner.
-2. **Solution Applied**:
-   - Created a standalone JavaScript build script `build.js` that programmatically builds both Vite client assets and bundles `server.ts` into `dist/server.cjs` using Node API.
-   - Updated `package.json` so `"build": "node build.js"` works identically across Node, Bun, and Render's environment.
-   - All build dependencies (`esbuild`, `vite`, `@tailwindcss/vite`) are placed in `dependencies` so Render installs them during build phase.
-3. **How to Redeploy on Render**:
-   - Commit and push all files (`package.json`, `build.js`, `render.yaml`) to your GitHub repo (`git push origin main`).
-   - In Render Dashboard for **Portfolio---Hanish**, click **Manual Deploy** → **Clear build cache & deploy**.
-   - Render will run `npm run build` (which executes `node build.js`) and start `node dist/server.cjs` cleanly!
+### 💡 Why it happened:
+In your Render Dashboard settings for **Portfolio---Hanish**, the **Root Directory** was set to `src` (or auto-detected as `src`). When Render executes `npm start` (`node dist/server.cjs`) inside `src`, Node looks for `src/dist/server.cjs` instead of root `dist/server.cjs`.
+
+### 🛡️ Permanent Dual-Location Fix Implemented:
+1. **Automated Dual-Sync (`build.js`)**: `build.js` builds Vite + esbuild and automatically copies the output to **BOTH** `./dist` and `./src/dist`.
+2. **Resilient Static Resolution (`server.ts`)**: The Express server automatically checks `./dist`, `./src/dist`, and parent directories for static frontend files.
+3. **Environment Setup (`package.json` & `render.yaml`)**: `NPM_CONFIG_PRODUCTION=false` ensures all build dependencies (`esbuild`, `vite`, `tsx`) are available during Render's build step.
+
+### 🚀 How to trigger the successful deploy:
+1. Push the latest code to your GitHub repo (`git push origin main`).
+2. On Render Dashboard (**Portfolio---Hanish**), click **Manual Deploy** → **Clear build cache & deploy**.
+3. Render will execute `node build.js` and start `node dist/server.cjs` cleanly without any module errors!
+
 
