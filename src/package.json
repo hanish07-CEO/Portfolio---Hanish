@@ -1,0 +1,11 @@
+{
+  "name": "react-example-src",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node start.js",
+    "build": "node build.js",
+    "start": "node start.js"
+  }
+}

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx server.ts",
     "build": "node build.js",
-    "start": "node dist/server.cjs",
+    "start": "node start.js",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit"
   },
