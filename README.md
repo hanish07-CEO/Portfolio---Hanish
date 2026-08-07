@@ -1,1 +1,0 @@
-🚀 Personal portfolio website featuring my projects, internships, hackathon achievements, technical skills, certifications, and experience. Built to showcase my journey as a Computer Science student, AI & Data Analytics enthusiast, and founder of UniSell.
