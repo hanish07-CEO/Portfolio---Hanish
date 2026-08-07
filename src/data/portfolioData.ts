@@ -10,7 +10,7 @@ export const personalData: PersonalInfo = {
   secondaryEmail: "hanish20011413012555@gmail.com",
   phone: "+91 7386202172",
   linkedin: "https://www.linkedin.com/in/hanish07",
-  github: "https://github.com/shivamxkumar", // or hanish07
+  github: "https://github.com/hanish07-CEO",
   college: "Indian Institute of Information Technology (IIIT) Surat",
   expectedGraduation: "2029",
   bio: "Second-year B.Tech Computer Science student at IIIT Surat with hands-on experience in AI engineering, data analytics, and full-stack software development. Currently Data Analytics Intern at iStudio and former AI Engineer Intern at DecodeLabs. Founder of UniSell, a dedicated e-commerce platform empowering small and medium enterprises (SMEs). Passionate about building high-performance scalable systems and exploring entrepreneurship.",
@@ -117,8 +117,8 @@ export const projectsData: ProjectItem[] = [
       "Designed a highly optimized MySQL DBMS architecture for fast catalog queries."
     ],
     technologies: ["React", "Node.js", "Express", "MySQL", "DBMS", "Tailwind CSS", "Render"],
-    githubUrl: "https://github.com/shivamxkumar/Portfolio-2.0",
-    liveUrl: "https://unisell-ecommerce.render.com",
+    githubUrl: "https://github.com/hanish07-CEO/UniSell",
+    liveUrl: "https://unisell-mghz.onrender.com",
     featured: true,
     image: UNISELL_SHOWCASE_SVG,
     showcaseBadges: ["Live on Render", "SME Marketplace", "MySQL DBMS Engine"]
@@ -136,8 +136,8 @@ export const projectsData: ProjectItem[] = [
       "Documented workflows and deployment scripts on GitHub."
     ],
     technologies: ["Python", "Pandas", "Matplotlib", "Scikit-Learn", "Machine Learning", "Git/GitHub"],
-    githubUrl: "https://github.com/shivamxkumar",
-    liveUrl: "https://github.com/shivamxkumar",
+    githubUrl: "https://github.com/hanish07-CEO",
+    liveUrl: "https://github.com/hanish07-CEO",
     featured: true,
     image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=800"
   },
@@ -154,8 +154,8 @@ export const projectsData: ProjectItem[] = [
       "Formulated actionable recommendations based on data trends."
     ],
     technologies: ["Python", "Pandas", "Matplotlib", "SQL", "Data Analytics", "Data Visualization"],
-    githubUrl: "https://github.com/shivamxkumar",
-    liveUrl: "https://github.com/shivamxkumar",
+    githubUrl: "https://github.com/hanish07-CEO",
+    liveUrl: "https://github.com/hanish07-CEO",
     featured: true,
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800"
   }

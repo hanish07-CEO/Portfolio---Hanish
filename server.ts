@@ -31,7 +31,7 @@ async function startServer() {
     });
   });
 
-  // Optional AI Assistant Endpoint using Gemini API
+  // Interactive AI Assistant Endpoint using Gemini API
   app.post("/api/ai-assistant", async (req, res) => {
     try {
       const { prompt } = req.body;
@@ -42,11 +42,19 @@ async function startServer() {
       const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
         return res.json({
-          reply: "I am Hanish's AI Portfolio Assistant! (Note: Gemini API Key is currently being configured. Here is a quick overview: Hanish Musini is a CSE student at IIIT Surat, founder of UniSell, and former AI & Data Analytics Intern at DecodeLabs & iStudio)."
+          reply: "I am Hanish's AI Portfolio Assistant! Hanish Musini is a CSE student at IIIT Surat, founder of UniSell, and former AI & Data Analytics Intern at DecodeLabs & iStudio. (Note: The server is operating with default fallback responses until a Gemini API Key is active)."
         });
       }
 
-      const ai = new GoogleGenAI({ apiKey });
+      const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: {
+          headers: {
+            'User-Agent': 'aistudio-build',
+          }
+        }
+      });
+
       const systemInstruction = `
 You are the interactive AI Portfolio Assistant for Hanish Musini.
 Your job is to answer questions about Hanish Musini concisely, accurately, and professionally based on his background:
@@ -64,10 +72,12 @@ Be polite, enthusiastic, concise (2-4 sentences max), and highlight Hanish's str
 `;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: [
-          { role: 'user', parts: [{ text: systemInstruction + "\nUser Question: " + prompt }] }
-        ]
+        model: 'gemini-3.6-flash',
+        contents: prompt,
+        config: {
+          systemInstruction,
+          temperature: 0.7
+        }
       });
 
       const reply = response.text || "Hanish is a B.Tech CSE student at IIIT Surat and Founder of UniSell with expertise in AI and Data Analytics.";
@@ -75,7 +85,7 @@ Be polite, enthusiastic, concise (2-4 sentences max), and highlight Hanish's str
     } catch (err: any) {
       console.error("Gemini Assistant Error:", err);
       return res.json({
-        reply: "Hanish Musini is a 2nd-year B.Tech CSE student at IIIT Surat, Founder of UniSell, AI Engineer Intern @ DecodeLabs, and Data Analytics Intern @ iStudio. Contact him at hanish070328@gmail.com."
+        reply: "Hanish Musini is a 2nd-year B.Tech CSE student at IIIT Surat, Founder of UniSell, AI Engineer Intern @ DecodeLabs, and Data Analytics Intern @ iStudio. Contact him at hanish070328@gmail.com!"
       });
     }
   });

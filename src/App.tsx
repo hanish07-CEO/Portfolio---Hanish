@@ -11,6 +11,7 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { ResumeModal } from './components/ResumeModal';
 import { AiAssistantModal } from './components/AiAssistantModal';
+import { CustomCursor } from './components/CustomCursor';
 
 export default function App() {
   const [resumeOpen, setResumeOpen] = useState(false);
@@ -18,6 +19,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans">
+      {/* Animated Custom Pointer */}
+      <CustomCursor />
+
       {/* Navigation */}
       <Navbar
         onOpenResume={() => setResumeOpen(true)}
