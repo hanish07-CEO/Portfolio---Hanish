@@ -61,6 +61,14 @@ If you only want to host the static React frontend without the Express backend:
 
 ---
 
-### Key Commands Summary
-- **Build**: `npm run build` (runs Vite build + esbuild server bundle)
-- **Start**: `npm start` (launches production Node.js Express server)
+## 🔧 Fix for `Cannot find module '/opt/render/project/src/dist/server.cjs'`
+
+If you previously encountered a build failure with `Cannot find module dist/server.cjs`:
+
+1. **Root Cause**: Render's production mode skips installing build tools (`esbuild`, `vite`, `typescript`) if listed under `devDependencies`.
+2. **Solution Applied**: All build dependencies have been moved to `dependencies` in `package.json`, and `NPM_CONFIG_PRODUCTION=false` has been set in `render.yaml`.
+3. **How to Redeploy on Render**:
+   - Commit & push the updated `package.json` and `render.yaml` to your GitHub repo (`git push origin main`).
+   - On the Render Dashboard, click **Manual Deploy** → **Clear build cache & deploy**.
+   - Your build will run `npm run build`, generating `dist/server.cjs` successfully!
+
