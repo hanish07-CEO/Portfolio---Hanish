@@ -41,11 +41,28 @@ function copyDirSync(src, dest) {
 async function main() {
   console.log('🚀 Starting production build...');
 
+  // Ensure public OG assets exist
+  const publicDir = path.join(projectRoot, 'public');
+  const ogImgPath = path.join(publicDir, 'og-image.png');
+  if (!fs.existsSync(ogImgPath)) {
+    console.log('🖼️ Generating social preview OG image...');
+    try {
+      await import('./scripts/generate-og.js');
+    } catch (e) {
+      console.warn('Note: generate-og fallback:', e.message);
+    }
+  }
+
   console.log('📦 1/2: Building client SPA with Vite...');
   await viteBuild({
     configFile: path.join(projectRoot, 'vite.config.ts'),
     root: projectRoot,
   });
+
+  // Ensure public folder items are in dist
+  if (fs.existsSync(publicDir)) {
+    copyDirSync(publicDir, path.join(projectRoot, 'dist'));
+  }
 
   console.log('⚡ 2/2: Bundling Express server with esbuild...');
   const serverEntryPoint = path.join(projectRoot, 'server.ts');

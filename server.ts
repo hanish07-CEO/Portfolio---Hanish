@@ -33,27 +33,46 @@ async function startServer() {
 
   // Interactive AI Assistant Endpoint using Gemini API
   app.post("/api/ai-assistant", async (req, res) => {
-    try {
-      const { prompt } = req.body;
-      if (!prompt) {
-        return res.status(400).json({ error: "Prompt is required." });
-      }
+    const { prompt } = req.body || {};
+    if (!prompt) {
+      return res.status(400).json({ error: "Prompt is required." });
+    }
 
+    const lower = (prompt || "").toLowerCase();
+
+    // Smart Contextual Knowledge Base for instant accurate responses
+    const getSmartFallback = (q: string): string => {
+      if (q.includes("decodelab") || q.includes("decode")) {
+        return "At DecodeLabs (June - July 2026), Hanish worked as an AI Engineer Intern. He developed machine learning models, performed data preprocessing, optimized feature pipelines, and managed project workflows using Python, Pandas, and Git.";
+      }
+      if (q.includes("istudio")) {
+        return "At iStudio (May - July 2026), Hanish worked as a Data Analytics Intern. He constructed data visualization dashboards, executed SQL queries, and transformed raw data into actionable insights for strategic decision-making.";
+      }
+      if (q.includes("unisell")) {
+        return "UniSell is an e-commerce platform founded by Hanish Musini to empower Small & Medium Enterprises (SMEs). Built using React, Express, Node.js, MySQL DBMS, and Tailwind CSS. You can visit the live platform at https://unisell-mghz.onrender.com!";
+      }
+      if (q.includes("education") || q.includes("college") || q.includes("iiit") || q.includes("surat")) {
+        return "Hanish Musini is a second-year B.Tech student in Computer Science & Engineering at IIIT Surat (Expected Graduation 2029). He completed intermediate at Narayana Junior College, Hyderabad, and schooling at St. Joseph's High School, Kurnool.";
+      }
+      if (q.includes("skill") || q.includes("tech") || q.includes("languages")) {
+        return "Hanish is skilled in C++, Python, Java, SQL, JavaScript, React, Node.js, Express, MySQL DBMS, Tailwind CSS, Machine Learning, Data Analytics, Pandas, and Git.";
+      }
+      if (q.includes("hackathon") || q.includes("kanad") || q.includes("achievement") || q.includes("police")) {
+        return "Hanish was a National Finalist in KANAD S.H.I.E.L.D. 2026, a prestigious Cybersecurity Hackathon organized by the Ahmedabad City Police. He is also an active member of the E-Cell (Aspiring Ruminate) at IIIT Surat.";
+      }
+      if (q.includes("contact") || q.includes("email") || q.includes("hire") || q.includes("phone")) {
+        return "You can reach Hanish Musini directly via email at hanish070328@gmail.com, phone at +91 7386202172, or LinkedIn at linkedin.com/in/hanish07.";
+      }
+      return "Hanish Musini is a 2nd-year B.Tech CSE student at IIIT Surat, Founder of UniSell, former AI Engineer Intern @ DecodeLabs, and Data Analytics Intern @ iStudio. Feel free to ask about his skills, projects, or background!";
+    };
+
+    try {
       const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
-        return res.json({
-          reply: "I am Hanish's AI Portfolio Assistant! Hanish Musini is a CSE student at IIIT Surat, founder of UniSell, and former AI & Data Analytics Intern at DecodeLabs & iStudio. (Note: The server is operating with default fallback responses until a Gemini API Key is active)."
-        });
+        return res.json({ reply: getSmartFallback(lower) });
       }
 
-      const ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build',
-          }
-        }
-      });
+      const ai = new GoogleGenAI({ apiKey });
 
       const systemInstruction = `
 You are the interactive AI Portfolio Assistant for Hanish Musini.
@@ -63,16 +82,16 @@ Your job is to answer questions about Hanish Musini concisely, accurately, and p
 - Experience: 
   1. Data Analytics Intern at iStudio (May 2026 - July 2026): Data visualization, SQL, Python reports, actionable insights.
   2. AI Engineer Intern at DecodeLabs (June 2026 - July 2026): Machine learning models, data preprocessing, Git/GitHub.
-  3. Founder & Developer @ UniSell: E-commerce platform for SMEs built with React, Express, MySQL, Render.
+  3. Founder & Developer @ UniSell: E-commerce platform for SMEs built with React, Express, MySQL, Render (https://unisell-mghz.onrender.com).
 - Skills: C++, Python, Java, SQL, JavaScript, React, Tailwind CSS, MySQL, DBMS, Pandas, Matplotlib, Machine Learning, Data Analytics, Git, VS Code, Android Studio.
 - Achievements: National Finalist in KANAD S.H.I.E.L.D. 2026 (Cybersecurity Hackathon by Ahmedabad City Police), E-Cell Member (Aspiring Ruminate), Founder of UniSell.
-- Contact: hanish070328@gmail.com, +91 7386202172, LinkedIn: linkedin.com/in/hanish07.
+- Contact: hanish070328@gmail.com, +91 7386202172, LinkedIn: linkedin.com/in/hanish07, GitHub: github.com/hanish07-CEO.
 
 Be polite, enthusiastic, concise (2-4 sentences max), and highlight Hanish's strengths in software engineering, AI, and entrepreneurship.
 `;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
         config: {
           systemInstruction,
@@ -80,14 +99,49 @@ Be polite, enthusiastic, concise (2-4 sentences max), and highlight Hanish's str
         }
       });
 
-      const reply = response.text || "Hanish is a B.Tech CSE student at IIIT Surat and Founder of UniSell with expertise in AI and Data Analytics.";
+      const reply = response.text || getSmartFallback(lower);
       return res.json({ reply });
     } catch (err: any) {
       console.error("Gemini Assistant Error:", err);
       return res.json({
-        reply: "Hanish Musini is a 2nd-year B.Tech CSE student at IIIT Surat, Founder of UniSell, AI Engineer Intern @ DecodeLabs, and Data Analytics Intern @ iStudio. Contact him at hanish070328@gmail.com!"
+        reply: getSmartFallback(lower)
       });
     }
+  });
+
+  // Dedicated Open Graph Preview Routes
+  app.get("/og-image.png", (req, res) => {
+    const candidatePaths = [
+      path.join(process.cwd(), "public", "og-image.png"),
+      path.join(process.cwd(), "dist", "og-image.png"),
+      path.join(__dirname, "public", "og-image.png"),
+      path.join(__dirname, "dist", "og-image.png"),
+    ];
+    for (const p of candidatePaths) {
+      if (fs.existsSync(p)) {
+        res.setHeader("Content-Type", "image/png");
+        res.setHeader("Cache-Control", "public, max-age=86400");
+        return res.sendFile(p);
+      }
+    }
+    res.status(404).send("OG image not found");
+  });
+
+  app.get("/og-image.svg", (req, res) => {
+    const candidatePaths = [
+      path.join(process.cwd(), "public", "og-image.svg"),
+      path.join(process.cwd(), "dist", "og-image.svg"),
+      path.join(__dirname, "public", "og-image.svg"),
+      path.join(__dirname, "dist", "og-image.svg"),
+    ];
+    for (const p of candidatePaths) {
+      if (fs.existsSync(p)) {
+        res.setHeader("Content-Type", "image/svg+xml");
+        res.setHeader("Cache-Control", "public, max-age=86400");
+        return res.sendFile(p);
+      }
+    }
+    res.status(404).send("OG SVG not found");
   });
 
   // Vite Middleware in Dev vs Static Files in Production
